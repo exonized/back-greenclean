@@ -5,7 +5,8 @@ origins = [
     "http://localhost:3000",
     "http://localhost:8000",
     "https://gitlab.com/",
-    "https://green-back.herokuapp.com/"
+    "https://green-back.herokuapp.com/",
+    "https://green-back.herokuapp.com/docs",
 ]
 
 oauth2schema = _security.OAuth2PasswordBearer(tokenUrl="/api/token")
