@@ -103,7 +103,7 @@ async def create_categorie(
         bucket.upload_fileobj(
             file.file, file.filename)
 
-        URL = "https://greencleang4.s3.eu-west-3.amazonaws.com/" + file.filename
+        URL = "https://greencleang4.s3.eu-west-3.amazonaws.com/Categories//" + file.filename
 
         categorie_obj = models.Categories(
             categorie=Categorie.categorie, images=URL
