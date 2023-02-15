@@ -19,6 +19,10 @@ import Users.UsersDELETE
 import Users.UsersGET
 import Users.UsersPOST
 
+import Admin.AdminPOST
+import Admin.AdminGET
+import Admin.AdminDELETE
+
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
@@ -115,3 +119,36 @@ async def get_categories(categories: schemas.Categorie.Categories = fastapi.Depe
 @app.get("/api/get/souscategories/{categorie}", tags=["Categories"])
 async def get_souscategorie_categories(categorie: schemas.Souscategorie.sousCategories = fastapi.Depends(Users.UsersGET.get_souscategories_categorie)):
     return categorie
+
+
+# AdminPOST
+
+
+@app.post("/api/produit", tags=["Admin-Produit"])
+def produit_create(produit: schemas.Produit.Produits = fastapi.Depends(Admin.AdminPOST.create_produit)):
+    return produit
+
+
+@app.post("/api/categorie", tags=["Admin-Categorie"])
+def categorie_create(categorie: schemas.Categorie.Categories = fastapi.Depends(Admin.AdminPOST.create_categorie)):
+    return categorie
+
+
+@app.post("/api/souscategorie", tags=["Admin-Categorie"])
+def souscategorie_create(souscategorie: schemas.Souscategorie.sousCategories = fastapi.Depends(Admin.AdminPOST.create_souscategorie)):
+    return souscategorie
+
+# AdminGET
+
+
+@app.get("/api/users/get", tags=["Admin-Utilisateur"], )
+async def get_user_all(user: schemas.Users.User = fastapi.Depends(Admin.AdminGET.get_users)):
+    return user
+
+
+# AdminDELETE
+
+
+@app.delete("/api/categorie/delete/{id}", tags=["Admin-Categorie"])
+async def delete_categorie(id: int, categorie: schemas.Categorie.Categories = fastapi.Depends(Admin.AdminDELETE.delete_categorie)):
+    return {"supprimer": categorie}
