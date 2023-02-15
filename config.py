@@ -7,6 +7,7 @@ origins = [
     "https://gitlab.com/",
     "https://green-back.herokuapp.com/",
     "https://green-back.herokuapp.com/docs",
+    "https://greenclean.vercel.app/"
 ]
 
 oauth2schema = _security.OAuth2PasswordBearer(tokenUrl="/api/token")
