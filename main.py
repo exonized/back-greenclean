@@ -7,6 +7,10 @@ import fastapi
 import sqlalchemy.orm as _orm
 
 import schemas.Users
+import schemas.Categorie
+import schemas.Produit
+import schemas.Souscategorie
+
 import models
 import config
 from database import SessionLocal, engine
@@ -82,4 +86,32 @@ async def delete_user(user: schemas.Users.User = fastapi.Depends(Users.UsersDELE
     return user
 
 
-# Users
+# Produits
+
+
+@app.get("/api/get/produits", tags=["Produits"])
+async def get_produits(prevention: schemas.Produit.Produits = fastapi.Depends(Users.UsersGET.get_produits)):
+    return prevention
+
+
+@app.get("/api/get/produits/{id}", tags=["Produits"])
+async def get_produit_id(id: int, produit: schemas.Produit.Produits = fastapi.Depends(Users.UsersGET.get_produit_id)):
+    return produit
+
+
+@app.get("/api/get/produits/souscategorie/{produits}", tags=["Produits"])
+async def get_produit_id(produits: str, produit: schemas.Produit.Produits = fastapi.Depends(Users.UsersGET.get_produit_produitname)):
+    return produit
+
+
+# Categories
+
+
+@app.get("/api/get/categories", tags=["Categories"])
+async def get_categories(categories: schemas.Categorie.Categories = fastapi.Depends(Users.UsersGET.get_categories)):
+    return categories
+
+
+@app.get("/api/get/souscategories/{categorie}", tags=["Categories"])
+async def get_souscategorie_categories(categorie: schemas.Souscategorie.sousCategories = fastapi.Depends(Users.UsersGET.get_souscategories_categorie)):
+    return categorie

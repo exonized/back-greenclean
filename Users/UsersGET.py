@@ -44,3 +44,57 @@ async def get_current_user(
         )
 
     return schemas.Users.User.from_orm(user)
+
+
+async def get_produits(
+    db: _orm.Session = fastapi.Depends(get_db),
+
+):
+    produits = db.query(models.Produits).filter().all()
+    return produits
+
+
+async def get_produit_id(
+    id: int,
+    db: _orm.Session = fastapi.Depends(get_db),
+):
+    produit = db.query(models.Produits).get(id)
+    return (produit)
+
+
+async def get_produit_souscategories(
+    categorie: str,
+    db: _orm.Session = fastapi.Depends(get_db),
+
+):
+    souscategorie = db.query(models.Produits).filter(
+        models.Produits.souscategories == categorie).all()
+    return (souscategorie)
+
+
+async def get_produit_produitname(
+    produits: str,
+    db: _orm.Session = fastapi.Depends(get_db),
+
+):
+    produit = db.query(models.Produits).filter(
+        models.Produits.souscategories == produits).all()
+    return (produit)
+
+
+async def get_categories(
+    db: _orm.Session = fastapi.Depends(get_db),
+
+):
+    categories = db.query(models.Categories).filter().all()
+    return categories
+
+
+async def get_souscategories_categorie(
+    categorie: str,
+    db: _orm.Session = fastapi.Depends(get_db),
+
+):
+    souscategorie = db.query(models.SousCategories).filter(
+        models.SousCategories.categorie == categorie).all()
+    return (souscategorie)
