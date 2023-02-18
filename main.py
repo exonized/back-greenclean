@@ -10,6 +10,7 @@ import schemas.Users
 import schemas.Categorie
 import schemas.Produit
 import schemas.Souscategorie
+import schemas.Commandes
 
 import models
 import config
@@ -120,6 +121,18 @@ async def get_categories(categories: schemas.Categorie.Categories = fastapi.Depe
 async def get_souscategorie_categories(categorie: schemas.Souscategorie.sousCategories = fastapi.Depends(Users.UsersGET.get_souscategories_categorie)):
     return categorie
 
+
+# Commandes
+
+
+@app.post("/api/commandes", tags=["Commandes"])
+def commandes_create(produit: schemas.Commandes.Commandes = fastapi.Depends(Users.UsersPOST.create_commandes)):
+    return produit
+
+
+@app.get("/api/commandes/me", tags=["Commandes"])
+async def get_commandes(user: schemas.Commandes.Commandes = fastapi.Depends(Users.UsersGET.get_current_commandes)):
+    return user
 
 # AdminPOST
 

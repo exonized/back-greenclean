@@ -34,6 +34,14 @@ class Feedback(Base):
     etoile = Column(Integer)
 
 
+class Commandes(Base):
+    __tablename__ = "Commandes"
+    id = Column(Integer, primary_key=True, index=True)
+    produit = Column(String)
+    numerocommandes = Column(String)
+    user = Column(String)
+
+
 class Categories(Base):
     __tablename__ = "Categories"
     id = Column(Integer, primary_key=True, index=True)

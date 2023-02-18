@@ -4,9 +4,14 @@ import sqlalchemy.orm as _orm
 import jwt
 import passlib.hash as _hash
 
+import fastapi
+from db import get_db
+from config import oauth2schema
 from config import JWT_SECRET
 
+
 import schemas.Users
+import schemas.Commandes
 import models
 
 
@@ -26,3 +31,22 @@ async def create_user(user: schemas.Users.UserCreate, db: _orm.Session):
     db.commit()
     db.refresh(user_obj)
     return user_obj
+
+
+async def create_commandes(
+    Commandes: schemas.Commandes.CommandesCreate = fastapi.Depends(),
+    db: _orm.Session = fastapi.Depends(get_db),
+    token: str = fastapi.Depends(oauth2schema),
+
+):
+    payload = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
+    membre = payload["email"]
+
+    commandes_obj = models.Commandes(
+        produit=Commandes.produit, numerocommandes=Commandes.numerocommandes, user=membre
+    )
+    db.add(commandes_obj)
+    db.commit()
+    db.refresh(commandes_obj)
+
+    return (commandes_obj)

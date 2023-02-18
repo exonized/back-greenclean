@@ -4,6 +4,7 @@ import jwt
 
 
 import schemas.Users
+import schemas.Commandes
 
 
 import sqlalchemy.orm as _orm
@@ -98,3 +99,16 @@ async def get_souscategories_categorie(
     souscategorie = db.query(models.SousCategories).filter(
         models.SousCategories.categorie == categorie).all()
     return (souscategorie)
+
+
+async def get_current_commandes(
+    db: _orm.Session = fastapi.Depends(get_db),
+    token: str = fastapi.Depends(oauth2schema),
+):
+
+    payload = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
+    membre = payload["email"]
+
+    commandes = db.query(models.Commandes).filter(
+        models.Commandes.user == membre).all()
+    return (commandes)
