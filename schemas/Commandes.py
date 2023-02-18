@@ -15,6 +15,7 @@ class CommandesCreate(_CommandesBase):
 class Commandes(_CommandesBase):
     id: int
     user: str
+    etat: str
 
     class Config:
         orm_mode = True

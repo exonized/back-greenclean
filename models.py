@@ -40,6 +40,8 @@ class Commandes(Base):
     produit = Column(String)
     numerocommandes = Column(String)
     user = Column(String)
+    etat = Column(String, default=(
+        'Votre commande est en cour de traitement...'))
 
 
 class Categories(Base):
