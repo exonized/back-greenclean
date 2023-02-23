@@ -13,9 +13,9 @@ class User(Base):
     adresse = Column(String)
     ville = Column(String)
     complement = Column(String)
-    codepostal = Column(Integer)
+    codepostal = Column(String)
     region = Column(String)
-    numerorue = Column(Integer)
+    numerorue = Column(String)
     roles = Column(String,  default=("Membre"))
     avatar = Column(String, default=(
         'https://greencleang4.s3.eu-west-3.amazonaws.com/Avatar/base.png'))

@@ -8,9 +8,9 @@ class _UserBase(_pydantic.BaseModel):
     adresse: str
     ville: str
     complement: str
-    codepostal: int
+    codepostal: str
     region: str
-    numerorue: int
+    numerorue: str
 
 
 class UserCreate(_UserBase):
