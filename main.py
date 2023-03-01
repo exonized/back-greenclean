@@ -11,6 +11,7 @@ import schemas.Categorie
 import schemas.Produit
 import schemas.Souscategorie
 import schemas.Commandes
+import schemas.UsersServices
 
 import models
 import config
@@ -19,6 +20,10 @@ from database import SessionLocal, engine
 import Users.UsersDELETE
 import Users.UsersGET
 import Users.UsersPOST
+
+import Users.UsersServiceDELETE
+import Users.UsersServiceGET
+import Users.UsersServicePOST
 
 import Admin.AdminPOST
 import Admin.AdminGET
@@ -88,6 +93,46 @@ async def get_user(user: schemas.Users.User = fastapi.Depends(Users.UsersGET.get
 
 @app.delete("/api/user/me/delete", tags=["Utilisateur"])
 async def delete_user(user: schemas.Users.User = fastapi.Depends(Users.UsersDELETE.delete_current_user)):
+    return user
+
+
+# UsersServices
+
+@app.post("/api/services/users/", tags=["Services"])
+async def create_user_services(
+    user: schemas.UsersServices.UserServicesCreate, db: _orm.Session = fastapi.Depends(get_db)
+):
+    db_user = await Users.UsersServiceGET.get_user_by_email(user.email, db)
+    if db_user:
+        raise fastapi.HTTPException(
+            status_code=400, detail="Votre email est déjà utilisé")
+
+    user = await Users.UsersServicePOST.create_user(user, db)
+
+    return await Users.UsersServicePOST.create_token(user)
+
+
+@app.post("/api/services/token", tags=["Services"])
+async def generate_token(
+    form_data: _security.OAuth2PasswordRequestForm = fastapi.Depends(),
+    db: _orm.Session = fastapi.Depends(get_db),
+):
+    user = await Users.UsersServiceGET.authenticate_user(form_data.username, form_data.password, db)
+
+    if not user:
+        raise fastapi.HTTPException(
+            status_code=401, detail="Utilisateur non enregistré")
+
+    return await Users.UsersServicePOST.create_token(user)
+
+
+@app.get("/api/services/me", tags=["Services"], response_model=schemas.UsersServices.UserServices)
+async def get_user(user: schemas.UsersServices.UserServices = fastapi.Depends(Users.UsersServiceGET.get_current_user)):
+    return user
+
+
+@app.delete("/api/services/me/delete", tags=["Services"])
+async def delete_user(user: schemas.UsersServices.UserServices = fastapi.Depends(Users.UsersServiceDELETE.delete_current_user)):
     return user
 
 

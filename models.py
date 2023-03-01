@@ -25,6 +25,20 @@ class User(Base):
         return _hash.bcrypt.verify(password, self.hashed_password)
 
 
+class UserServices(Base):
+    __tablename__ = "UtilisateursServices"
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True, index=True)
+    siren = Column(String)
+    roles = Column(String,  default=("Entreprise"))
+    avatar = Column(String, default=(
+        'https://greencleang4.s3.eu-west-3.amazonaws.com/Avatar/base.png'))
+    hashed_password = Column(String)
+
+    def verify_password(self, password: str):
+        return _hash.bcrypt.verify(password, self.hashed_password)
+
+
 class Feedback(Base):
     __tablename__ = "Feedback"
     id = Column(Integer, primary_key=True, index=True)
