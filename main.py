@@ -12,6 +12,7 @@ import schemas.Produit
 import schemas.Souscategorie
 import schemas.Commandes
 import schemas.UsersServices
+import schemas.Contact
 
 import models
 import config
@@ -178,6 +179,19 @@ def commandes_create(produit: schemas.Commandes.Commandes = fastapi.Depends(User
 @app.get("/api/commandes/me", tags=["Commandes"])
 async def get_commandes(user: schemas.Commandes.Commandes = fastapi.Depends(Users.UsersGET.get_current_commandes)):
     return user
+
+
+# Contact
+
+
+@app.post("/api/contact", tags=["Contact"])
+def contact_create(contact: schemas.Contact.Contact = fastapi.Depends(Users.UsersPOST.create_contact)):
+    return contact
+
+
+@app.get("/api/contact/me", tags=["Contact"])
+async def get_contact(contact: schemas.Contact.Contact = fastapi.Depends(Users.UsersGET.get_current_contacts)):
+    return contact
 
 # AdminPOST
 

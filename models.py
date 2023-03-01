@@ -86,9 +86,9 @@ class Produits(Base):
 class Contact(Base):
     __tablename__ = "Contact"
     id = Column(Integer, primary_key=True, index=True)
-    id_user = Column(Integer)
-    types = Column(String)
-    contenu = Column(String)
+    user = Column(String)
+    probleme = Column(String)
+    message = Column(String)
     etat = Column(String,  default=('Non traité'))
     date = Column(TIMESTAMP(timezone=False),
                   nullable=False, default=datetime.now())

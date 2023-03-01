@@ -112,3 +112,16 @@ async def get_current_commandes(
     commandes = db.query(models.Commandes).filter(
         models.Commandes.user == membre).all()
     return (commandes)
+
+
+async def get_current_contacts(
+    db: _orm.Session = fastapi.Depends(get_db),
+    token: str = fastapi.Depends(oauth2schema),
+):
+
+    payload = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
+    membre = payload["email"]
+
+    contacts = db.query(models.Contact).filter(
+        models.Contact.user == membre).all()
+    return (contacts)

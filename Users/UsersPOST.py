@@ -12,6 +12,7 @@ from config import JWT_SECRET
 
 import schemas.Users
 import schemas.Commandes
+import schemas.Contact
 import models
 
 
@@ -50,3 +51,22 @@ async def create_commandes(
     db.refresh(commandes_obj)
 
     return (commandes_obj)
+
+
+async def create_contact(
+    Contact: schemas.Contact.ContactCreate = fastapi.Depends(),
+    db: _orm.Session = fastapi.Depends(get_db),
+    token: str = fastapi.Depends(oauth2schema),
+
+):
+    payload = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
+    membre = payload["email"]
+
+    contact_obj = models.Contact(
+        probleme=Contact.probleme, message=Contact.message, user=membre
+    )
+    db.add(contact_obj)
+    db.commit()
+    db.refresh(contact_obj)
+
+    return (contact_obj)
