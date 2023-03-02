@@ -133,3 +133,11 @@ async def get_services(
 ):
     services = db.query(models.Services).filter().all()
     return services
+
+
+async def get_services_id(
+    id: int,
+    db: _orm.Session = fastapi.Depends(get_db),
+):
+    produit = db.query(models.Services).get(id)
+    return (produit)

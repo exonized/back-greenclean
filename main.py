@@ -143,6 +143,11 @@ async def get_services(prevention: schemas.Service.Service = fastapi.Depends(Use
     return prevention
 
 
+@app.get("/api/get/services/{id}", tags=["Services"])
+async def get_services_id(id: int, service: schemas.Service.Service = fastapi.Depends(Users.UsersGET.get_services_id)):
+    return service
+
+
 # Produits
 
 
