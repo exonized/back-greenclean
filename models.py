@@ -109,6 +109,6 @@ class Prevention(Base):
 class Services(Base):
     __tablename__ = "Services"
     id = Column(Integer, primary_key=True, index=True)
-    service = Column(String)
+    titre = Column(String)
     description = Column(String)
-    contenu = Column(String)
+    images = Column(String)

@@ -44,8 +44,8 @@ async def create_produit(
             )
 
         s3 = boto3.resource('s3',
-                            aws_access_key_id="AKIAUJ4KOY3EGXFEUT53",
-                            aws_secret_access_key="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")
+                            aws_access_key_id="AKIAUJ4KOY3EH3CM4H2I",
+                            aws_secret_access_key="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")
         bucket = s3.Bucket(S3_BUCKET_NAME)
         await file.seek(0)
 
@@ -95,8 +95,8 @@ async def create_categorie(
             )
 
         s3 = boto3.resource('s3',
-                            aws_access_key_id="AKIAUJ4KOY3EGXFEUT53",
-                            aws_secret_access_key="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")
+                            aws_access_key_id="AKIAUJ4KOY3EH3CM4H2I",
+                            aws_secret_access_key="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")
         bucket = s3.Bucket(S3_BUCKET_NAME)
         await file.seek(0)
 
@@ -146,8 +146,8 @@ async def create_souscategorie(
             )
 
         s3 = boto3.resource('s3',
-                            aws_access_key_id="AKIAUJ4KOY3EGXFEUT53",
-                            aws_secret_access_key="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")
+                            aws_access_key_id="AKIAUJ4KOY3EH3CM4H2I",
+                            aws_secret_access_key="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")
         bucket = s3.Bucket(S3_BUCKET_NAME)
         await file.seek(0)
 
