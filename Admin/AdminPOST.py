@@ -13,6 +13,7 @@ from config import oauth2schema, JWT_SECRET, SUPPORTED_FILE_TYPES, S3_BUCKET_NAM
 import schemas.Produit
 import schemas.Categorie
 import schemas.Souscategorie
+import schemas.Service
 
 import models
 
@@ -44,8 +45,8 @@ async def create_produit(
             )
 
         s3 = boto3.resource('s3',
-                            aws_access_key_id="AKIAUJ4KOY3EH3CM4H2I",
-                            aws_secret_access_key="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")
+                            aws_access_key_id="AKIAUJ4KOY3ELTIP45M6",
+                            aws_secret_access_key="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")
         bucket = s3.Bucket(S3_BUCKET_NAME)
         await file.seek(0)
 
@@ -95,8 +96,8 @@ async def create_categorie(
             )
 
         s3 = boto3.resource('s3',
-                            aws_access_key_id="AKIAUJ4KOY3EH3CM4H2I",
-                            aws_secret_access_key="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")
+                            aws_access_key_id="AKIAUJ4KOY3ELTIP45M6",
+                            aws_secret_access_key="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")
         bucket = s3.Bucket(S3_BUCKET_NAME)
         await file.seek(0)
 
@@ -146,8 +147,8 @@ async def create_souscategorie(
             )
 
         s3 = boto3.resource('s3',
-                            aws_access_key_id="AKIAUJ4KOY3EH3CM4H2I",
-                            aws_secret_access_key="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")
+                            aws_access_key_id="AKIAUJ4KOY3ELTIP45M6",
+                            aws_secret_access_key="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")
         bucket = s3.Bucket(S3_BUCKET_NAME)
         await file.seek(0)
 
@@ -168,3 +169,54 @@ async def create_souscategorie(
         )
 
     return (souscategorie_obj)
+
+
+async def create_service(
+    file: UploadFile = File(...),
+    service: schemas.Service.ServiceCreate = fastapi.Depends(),
+    db: _orm.Session = fastapi.Depends(get_db),
+    token: str = fastapi.Depends(oauth2schema),
+
+):
+
+    payload = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
+    roles = payload["roles"]
+
+    if (roles == "Admin"):
+
+        if not file:
+            raise fastapi.HTTPException(
+                status_code=fastapi.HTTPException(
+                    status_code=400, detail="Fichier non trouvé..")
+            )
+        contents = await file.read()
+        file_type = magic.from_buffer(buffer=contents, mime=True)
+
+        if file_type not in SUPPORTED_FILE_TYPES:
+            raise fastapi.HTTPException(
+                status_code=400, detail="Le fromat de fichier n'est pas respecter"
+            )
+
+        s3 = boto3.resource('s3',
+                            aws_access_key_id="AKIAUJ4KOY3ELTIP45M6",
+                            aws_secret_access_key="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")
+        bucket = s3.Bucket(S3_BUCKET_NAME)
+        await file.seek(0)
+
+        bucket.upload_fileobj(
+            file.file, file.filename)
+
+        URL = "https://greencleang4.s3.eu-west-3.amazonaws.com/" + file.filename
+
+        service_obj = models.Services(
+            titre=service.titre, soustitre=service.soustitre, description=service.description,  images=URL
+        )
+        db.add(service_obj)
+        db.commit()
+        db.refresh(service_obj)
+    else:
+        raise fastapi.HTTPException(
+            status_code=409, detail="Vous n'êtes pas administrateur"
+        )
+
+    return (service_obj)

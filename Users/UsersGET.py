@@ -125,3 +125,11 @@ async def get_current_contacts(
     contacts = db.query(models.Contact).filter(
         models.Contact.user == membre).all()
     return (contacts)
+
+
+async def get_services(
+    db: _orm.Session = fastapi.Depends(get_db),
+
+):
+    services = db.query(models.Services).filter().all()
+    return services

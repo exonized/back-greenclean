@@ -13,6 +13,7 @@ import schemas.Souscategorie
 import schemas.Commandes
 import schemas.UsersServices
 import schemas.Contact
+import schemas.Service
 
 import models
 import config
@@ -137,6 +138,11 @@ async def delete_user(user: schemas.UsersServices.UserServices = fastapi.Depends
     return user
 
 
+@app.get("/api/get/services", tags=["Services"])
+async def get_services(prevention: schemas.Service.Service = fastapi.Depends(Users.UsersGET.get_services)):
+    return prevention
+
+
 # Produits
 
 
@@ -209,6 +215,11 @@ def categorie_create(categorie: schemas.Categorie.Categories = fastapi.Depends(A
 @app.post("/api/souscategorie", tags=["Admin-Categorie"])
 def souscategorie_create(souscategorie: schemas.Souscategorie.sousCategories = fastapi.Depends(Admin.AdminPOST.create_souscategorie)):
     return souscategorie
+
+
+@app.post("/api/service", tags=["Admin-Service"])
+def service_create(service: schemas.Service.Service = fastapi.Depends(Admin.AdminPOST.create_service)):
+    return service
 
 # AdminGET
 
